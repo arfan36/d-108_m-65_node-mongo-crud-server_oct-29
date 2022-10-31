@@ -19,6 +19,13 @@ async function run() {
     try {
         const userCollection = client.db('nodeMongoCrud').collection('users');
 
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const cursor = userCollection.find(query);
+            const users = await cursor.toArray();
+            res.send(users);
+        });
+
         app.post('/users', async (req, res) => {
             const user = req.body;
             console.log(user);
