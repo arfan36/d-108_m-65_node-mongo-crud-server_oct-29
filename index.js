@@ -27,7 +27,7 @@ async function run() {
             res.send(users);
         });
 
-        // update
+        // to update read specific user information
         app.get('/users/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -40,6 +40,23 @@ async function run() {
             const user = req.body;
             console.log(user);
             const result = await userCollection.insertOne(user);
+            res.send(result);
+        });
+
+        // update
+        app.put('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const user = req.body;
+            const option = { upsert: true };
+            const updateUser = {
+                $set: {
+                    name: user.name,
+                    address: user.address,
+                    email: user.email
+                }
+            };
+            const result = await userCollection.updateOne(filter, updateUser, option);
             res.send(result);
         });
 
