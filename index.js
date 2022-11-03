@@ -19,7 +19,7 @@ async function run() {
     try {
         const userCollection = client.db('nodeMongoCrud').collection('users');
 
-        // read
+        // read (R)
         app.get('/users', async (req, res) => {
             const query = {};
             const cursor = userCollection.find(query);
@@ -27,7 +27,7 @@ async function run() {
             res.send(users);
         });
 
-        // to update read specific user information
+        // to update, read specific user information
         app.get('/users/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -35,7 +35,7 @@ async function run() {
             res.send(user);
         });
 
-        // create
+        // create (C)
         app.post('/users', async (req, res) => {
             const user = req.body;
             console.log(user);
@@ -43,12 +43,12 @@ async function run() {
             res.send(result);
         });
 
-        // update
+        // update (U)
         app.put('/users/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
             const user = req.body;
-            const option = { upsert: true };
+            const option = { upsert: true }; //# (update or insert = upsert)
             const updateUser = {
                 $set: {
                     name: user.name,
@@ -60,7 +60,7 @@ async function run() {
             res.send(result);
         });
 
-        // Delete
+        // Delete (D)
         app.delete('/users/:id', async (req, res) => {
             const id = req.params.id;
             // console.log('Trying to delete: ', id);
